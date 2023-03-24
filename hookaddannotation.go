@@ -11,6 +11,19 @@ import (
 )
 
 func main() {
+	// parse args
+	// check version of hook API, one of args should be "api:" followed by number 2
+	for _, arg := range os.Args {
+		if strings.HasPrefix(arg, "api:") {
+			apiVersion := strings.TrimPrefix(arg, "api:")
+			if apiVersion != "2" {
+				fmt.Fprintln(os.Stderr, "Error: unsupported API version:", apiVersion)
+				os.Exit(1)
+			}
+		}
+	}
+
+	// parse input
 	var task model.Task
 	decoder := json.NewDecoder(os.Stdin)
 	err := decoder.Decode(&task)
