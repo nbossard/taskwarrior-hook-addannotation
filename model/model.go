@@ -23,3 +23,9 @@ type Task struct {
 	End         string       `json:"end,omitempty"`
 	Project     string       `json:"project,omitempty"`
 }
+
+// Rule is a struct to represent a rule found in .taskrc
+type Rule struct {
+	Prefix string `json:"prefix"`
+	URL    string `json:"url"`
+}

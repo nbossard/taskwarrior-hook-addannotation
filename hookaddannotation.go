@@ -23,6 +23,14 @@ func main() {
 		}
 	}
 
+	// get arg path of config file
+	var configPath string
+	for _, arg := range os.Args {
+		if strings.HasPrefix(arg, "rc:") {
+			configPath = strings.TrimPrefix(arg, "rc:")
+		}
+	}
+
 	// parse input
 	var task model.Task
 	decoder := json.NewDecoder(os.Stdin)
@@ -32,13 +40,22 @@ func main() {
 		os.Exit(1)
 	}
 
-	nbrAddedAnnotations := 0
-	// These are the rules to add annotations automatically to a task
-	nbrAddedAnnotations += addAnnotation("ISS", "https://taiga.tech.orange/project/thommil-mahali-poc/issue/", &task)
-	nbrAddedAnnotations += addAnnotation("MR", "https://gitlab.tech.orange/mahali/mahali-backend/-/merge_requests/", &task)
-	nbrAddedAnnotations += addAnnotation("US", "https://taiga.tech.orange/project/thommil-mahali-poc/us/", &task)
-	nbrAddedAnnotations += addAnnotation("TSK", "https://taiga.tech.orange/project/thommil-mahali-poc/task/", &task)
+	// find rules in config file
+	// load and parse config file
+	rules, err := tools.LoadConfig(configPath)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error loading config file:", err)
+		os.Exit(1)
+	}
 
+	nbrAddedAnnotations := 0
+
+	// execute rules from config file
+	for _, rule := range rules {
+		nbrAddedAnnotations += addAnnotation(rule.Prefix, rule.URL, &task)
+	}
+
+	// write output
 	encoder := json.NewEncoder(os.Stdout)
 	err = encoder.Encode(task)
 	if err != nil {

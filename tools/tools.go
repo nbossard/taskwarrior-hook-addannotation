@@ -1,7 +1,10 @@
 package tools
 
 import (
+	"bufio"
+	"encoding/json"
 	"hookaddannotation/model"
+	"os"
 	"strings"
 )
 
@@ -30,4 +33,40 @@ func ContainsAnnotationDescr(parAnnotations []model.Annotation, parAnnotation mo
 		}
 	}
 	return false
+}
+
+// LoadConfig to load and parse a taskwarrior config file
+// config files contains lines with the following format:
+// titi.tata.toto = "tutu"
+func LoadConfig(parConfigPath string) ([]model.Rule, error) {
+	var rules []model.Rule
+	// load file at path as text
+
+	f, err := os.Open(parConfigPath)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+
+	for scanner.Scan() {
+		curLine := scanner.Text()
+		if strings.HasPrefix(curLine, "hookaddannotation.rule") {
+			// get the value part, after the equal sign till the end of the line
+			startIndex := strings.Index(curLine, "=") + 1
+			endIndex := len(curLine)
+			ruleString := curLine[startIndex:endIndex]
+			// parse it as json to get a rule
+			var rule model.Rule
+			err := json.Unmarshal([]byte(ruleString), &rule)
+			if err != nil {
+				return nil, err
+			}
+			rules = append(rules, rule)
+		}
+	}
+	return rules, nil
 }
