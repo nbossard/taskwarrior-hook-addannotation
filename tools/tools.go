@@ -1,6 +1,7 @@
 package tools
 
 import (
+	"addissueannotation/model"
 	"strings"
 )
 
@@ -19,4 +20,14 @@ func ExtractNumber(parString string, parMarker string) string {
 		}
 	}
 	return ""
+}
+
+// ContainsAnnotationDescr to check if a slice of annotations contains an annotation with the same description.
+func ContainsAnnotationDescr(parAnnotations []model.Annotation, parAnnotation model.Annotation) bool {
+	for _, annotation := range parAnnotations {
+		if annotation.Description == parAnnotation.Description {
+			return true
+		}
+	}
+	return false
 }
