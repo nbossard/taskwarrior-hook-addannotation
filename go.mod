@@ -1,4 +1,4 @@
-module addissueannotation
+module hookaddannotation
 
 go 1.18
 

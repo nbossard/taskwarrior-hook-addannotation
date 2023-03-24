@@ -1,10 +1,10 @@
 package main
 
 import (
-	"addissueannotation/model"
-	"addissueannotation/tools"
 	"encoding/json"
 	"fmt"
+	"hookaddannotation/model"
+	"hookaddannotation/tools"
 	"os"
 	"strings"
 	"time"

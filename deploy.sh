@@ -6,6 +6,6 @@
 # Distributed under terms of the MIT license.
 #
 
-go build addissueannotation
-cp  addissueannotation ~/.task/hooks/on-add-autoaddannotations
+go build hookaddannotation
+cp  hookaddannotation ~/.task/hooks/on-add-autoaddannotations
 

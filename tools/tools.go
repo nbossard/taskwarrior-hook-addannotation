@@ -1,7 +1,7 @@
 package tools
 
 import (
-	"addissueannotation/model"
+	"hookaddannotation/model"
 	"strings"
 )
 
