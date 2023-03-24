@@ -39,8 +39,9 @@ func main() {
 	}
 
 	addAnnotation("ISS", "https://taiga.tech.orange/project/thommil-mahali-poc/issue/", &task)
-
 	addAnnotation("MR", "https://gitlab.tech.orange/mahali/mahali-backend/-/merge_requests/", &task)
+	addAnnotation("US", "https://taiga.tech.orange/project/thommil-mahali-poc/us/", &task)
+	addAnnotation("TSK", "https://taiga.tech.orange/project/thommil-mahali-poc/task/", &task)
 
 	encoder := json.NewEncoder(os.Stdout)
 	err = encoder.Encode(task)
