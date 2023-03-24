@@ -42,6 +42,7 @@ func main() {
 // addAnnotation to add a new annotation to a task.
 //
 // param parPrefix : prefix of the annotation. E.g. "ISS" for issue, "MR" for merge request.
+//  If a number is found after this prefix in the task description, this number will be added at the end of the URL
 // param parURL : URL to include in the annotation.
 func addAnnotation(parPrefix string, parURL string, parTask *model.Task) int {
 	if !strings.Contains(parTask.Description, parPrefix) {
