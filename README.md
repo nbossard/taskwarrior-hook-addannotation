@@ -9,5 +9,9 @@ Change method main in addissueannotation
 
 ## Installation
 
+```bash
 go build addissueannotation.go
 cp addissueannotation ~/.task/hooks/on-add-addissueannotation
+```
+
+<!-- vim: set conceallevel=0: -->
