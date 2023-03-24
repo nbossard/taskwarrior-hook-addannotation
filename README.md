@@ -3,12 +3,13 @@
 This is a program to add as a taskwarrior hook to automatically add annotations
 to tasks at time of creation.
 It adds annotation when a special pattern is found in created task description.
-For example if description contains "MR222" it will add annotation "https://gitlab.tech.orange/mahali/mahali-backend/-/merge_requests/222"
-You can add as many patterns as you want by adding lines in hookaddannotation.go
+For example if description contains "MR222" it will add annotation
+`"https://gitlab.tech.orange/mahali/mahali-backend/-/merge_requests/222"`
+You can add as many patterns as you want by adding lines in .taskrc config file.
 
 ## configuration
 
-Addd rules in config file with following format:
+Add rules in taskwarrior .taskrc config file with following format:
 
 ```text
 hookaddannotation.rule.r1= {"prefix":"MR", "URL":"https://gitlab.com/nbossard/taskwarrior/-/merge_requests/"}
