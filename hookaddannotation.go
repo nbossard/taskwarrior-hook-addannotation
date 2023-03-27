@@ -48,11 +48,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	nbrAddedAnnotations := 0
+	resAddAnnotations := ""
 
 	// execute rules from config file
 	for _, rule := range rules {
-		nbrAddedAnnotations += addAnnotation(rule.Prefix, rule.URL, &task)
+		resAddAnnotations += addAnnotation(rule.Prefix, rule.URL, &task)
 	}
 
 	// write output
@@ -62,8 +62,8 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
 	} else {
-		if nbrAddedAnnotations > 0 {
-			fmt.Fprintln(os.Stderr, "Successfully added annotations to task")
+		if resAddAnnotations != "" {
+			fmt.Fprintln(os.Stderr, resAddAnnotations)
 		}
 		os.Exit(0)
 	}
@@ -74,24 +74,33 @@ func main() {
 // param parPrefix : prefix of the annotation. E.g. "ISS" for issue, "MR" for merge request.
 //  If a number is found after this prefix in the task description, this number will be added at the end of the URL
 // param parURL : URL to include in the annotation.
-func addAnnotation(parPrefix string, parURL string, parTask *model.Task) int {
+func addAnnotation(parPrefix string, parURL string, parTask *model.Task) string {
+	res := ""
+
 	if !strings.Contains(parTask.Description, parPrefix) {
-		return 0
+		return ""
 	}
+	res += "Found prefix \"" + parPrefix + "\"\n"
+
 	// Extract the number after parPrefix in the task.description
 	number := tools.ExtractNumber(parTask.Description, parPrefix)
 	if number == "" {
-		return 0
+		res += "!! Did not found number\n"
 	}
+
 	// create a new annotation
 	newAnnotation := model.Annotation{
 		Description: parURL + number,
 		Entry:       time.Now().Format("20060102T150405Z"),
 	}
+
 	// append it to the task annotations if it does not already exist
 	if tools.ContainsAnnotationDescr(parTask.Annotations, newAnnotation) {
-		return 0
+		return "❌ already contains annotation\n"
 	}
+
 	parTask.Annotations = append(parTask.Annotations, newAnnotation)
-	return 1
+	res += "✅ Added annotation\n"
+
+	return res
 }
