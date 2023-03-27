@@ -26,4 +26,34 @@ go build hookaddannotation.go
 cp hookaddannotation ~/.task/hooks/on-add-addissueannotation
 ```
 
+## Usage 
+
+Sample usage, as usual with taskwarrior:
+```bash
+task add "Fixing MR222"
+
+Successfully added annotations to task
+Created task 73.
+
+task 73
+
+Name          Value
+ID            73
+Description   Fixing MR222
+                2023-03-25 00:42:32 https://gitlab.com/nbossard/taskwarrior/-/merge_requests/222
+Status        Pending
+Entered       2023-03-24 23:42:32 (28s)
+Last modified 2023-03-24 23:42:32 (28s)
+Virtual tags  ANNOTATED LATEST PENDING READY TAGGED UNBLOCKED
+UUID          bfed0cee-9be1-4c8b-8df5-8eccb1d62bab
+Urgency        3.4
+
+    annotations      0.8 *    1 =    0.8
+    tags             0.8 *    1 =    0.8
+    UDA priority.      1 *  1.8 =    1.8
+                                  ------
+                                     3.4
+```
+
+
 <!-- vim: set conceallevel=0: -->
