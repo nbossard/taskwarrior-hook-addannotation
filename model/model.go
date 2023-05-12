@@ -1,7 +1,7 @@
 package model
 
 // Annotation is a struct to represent an annotation
-// a sub-struct of task
+// a sub-struct of task.
 type Annotation struct {
 	Description string `json:"description"`
 	// Entry is the date and time the annotation was added.
@@ -24,7 +24,7 @@ type Task struct {
 	Project     string       `json:"project,omitempty"`
 }
 
-// Rule is a struct to represent a rule found in .taskrc
+// Rule is a struct to represent a rule found in .taskrc.
 type Rule struct {
 	Prefix string `json:"prefix"`
 	URL    string `json:"url"`
