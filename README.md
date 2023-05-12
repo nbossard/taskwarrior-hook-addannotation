@@ -1,5 +1,7 @@
 # Add annotation
 
+Available at https://github.com/nbossard/taskwarrior-hook-addannotation.git
+
 This is a program to add as a taskwarrior hook to automatically add annotations
 to tasks at time of creation.
 It adds annotation when a special pattern is found in created task description.
@@ -26,13 +28,16 @@ go build hookaddannotation.go
 cp hookaddannotation ~/.task/hooks/on-add-addissueannotation
 ```
 
-## Usage 
+## Usage
 
 Sample usage, as usual with taskwarrior:
+
 ```bash
 task add "Fixing MR222"
 
-Successfully added annotations to task
+🪄HookAddAnnotation: Found prefix "MR"
+🪄HookAddAnnotation: ✅ Added annotation "https://taiga.tech.orange/project/thommil-mahali-poc/merge-request/222"
+
 Created task 73.
 
 task 73
@@ -54,6 +59,5 @@ Urgency        3.4
                                   ------
                                      3.4
 ```
-
 
 <!-- vim: set conceallevel=0: -->

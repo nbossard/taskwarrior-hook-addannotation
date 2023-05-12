@@ -10,6 +10,11 @@ import (
 	"time"
 )
 
+const (
+	appName       = "🪄HookAddAnnotation"
+	appDispPrefix = appName + ": "
+)
+
 func main() {
 	// parse args
 	// check version of hook API, one of args should be "api:" followed by number 2
@@ -72,7 +77,7 @@ func main() {
 // addAnnotation to add a new annotation to a task.
 //
 // param parPrefix : prefix of the annotation. E.g. "ISS" for issue, "MR" for merge request.
-//  If a number is found after this prefix in the task description, this number will be added at the end of the URL
+// If a number is found after this prefix in the task description, this number will be added at the end of the URL
 // param parURL : URL to include in the annotation.
 func addAnnotation(parPrefix string, parURL string, parTask *model.Task) string {
 	res := ""
@@ -80,12 +85,12 @@ func addAnnotation(parPrefix string, parURL string, parTask *model.Task) string 
 	if !strings.Contains(parTask.Description, parPrefix) {
 		return ""
 	}
-	res += "Found prefix \"" + parPrefix + "\"\n"
+	res += appDispPrefix + "Found prefix \"" + parPrefix + "\"\n"
 
 	// Extract the number after parPrefix in the task.description
 	number := tools.ExtractNumber(parTask.Description, parPrefix)
 	if number == "" {
-		res += "!! Did not found number\n"
+		return appDispPrefix + "❌ Did not found number, cancelling adding annotation\n"
 	}
 
 	// create a new annotation
@@ -96,11 +101,11 @@ func addAnnotation(parPrefix string, parURL string, parTask *model.Task) string 
 
 	// append it to the task annotations if it does not already exist
 	if tools.ContainsAnnotationDescr(parTask.Annotations, newAnnotation) {
-		return "❌ already contains annotation\n"
+		return appDispPrefix + "❌ already contains annotation\n"
 	}
 
 	parTask.Annotations = append(parTask.Annotations, newAnnotation)
-	res += "✅ Added annotation\n"
+	res += appDispPrefix + "✅ Added annotation \"" + newAnnotation.Description + "\"\n"
 
 	return res
 }
