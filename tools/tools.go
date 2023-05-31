@@ -35,6 +35,16 @@ func ContainsAnnotationDescr(parAnnotations []model.Annotation, parAnnotation mo
 	return false
 }
 
+// ContainsAnnotationPrefix to check if a slice of annotations contains an annotation with the provided prefix.
+func ContainsAnnotationPrefix(parAnnotations []model.Annotation, parPrefix string) bool {
+	for _, annotation := range parAnnotations {
+		if strings.Contains(annotation.Description, parPrefix) {
+			return true
+		}
+	}
+	return false
+}
+
 // LoadConfig to load and parse a taskwarrior config file
 // config files contains lines with the following format:
 // titi.tata.toto = "tutu"

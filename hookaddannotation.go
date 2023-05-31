@@ -74,21 +74,32 @@ func main() {
 	}
 }
 
-// addAnnotation to add a new annotation to a task.
+// addAnnotation to add a new annotation to a task if prefix found and not already existing.
 //
-// param parPrefix : prefix of the annotation. E.g. "ISS" for issue, "MR" for merge request.
+// param parPrefix : prefix of the annotation to be searched. E.g. "ISS" for issue, "MR" for merge request.
 // If a number is found after this prefix in the task description, this number will be added at the end of the URL
 // param parURL : URL to include in the annotation.
 func addAnnotation(parPrefix string, parURL string, parTask *model.Task) string {
 	res := ""
 
-	if !strings.Contains(parTask.Description, parPrefix) {
+	// quick exit if prefix is not found in task description nor in task annotations
+	if !strings.Contains(parTask.Description, parPrefix) &&
+		!tools.ContainsAnnotationPrefix(parTask.Annotations, parPrefix) {
 		return ""
 	}
 	res += appDispPrefix + "Found prefix \"" + parPrefix + "\"\n"
 
 	// Extract the number after parPrefix in the task.description
 	number := tools.ExtractNumber(parTask.Description, parPrefix)
+	if number == "" {
+		// fallback, search in annotations
+		for _, annotation := range parTask.Annotations {
+			number = tools.ExtractNumber(annotation.Description, parPrefix)
+			if number != "" {
+				break
+			}
+		}
+	}
 	if number == "" {
 		return appDispPrefix + "❌ Did not found number, cancelling adding annotation\n"
 	}
