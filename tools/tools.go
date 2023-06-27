@@ -9,10 +9,13 @@ import (
 )
 
 // ExtractNumber to extract a number from a string after a marker.
+// Example: ExtractNumber("bla bli toto ISS123", "ISS") returns "123"
+// Warning: if the marker is present multiple times in the string but the first occurence does not contain a number, will continue searching till it finds an occurence followed by a number
+// Example: ExtractNumber("Merger MR JAMES MR222", "MR") returns "222"
 // returns "" if no number is found.
 func ExtractNumber(parString string, parMarker string) string {
 	if strings.Contains(parString, parMarker) {
-		// Extract the number after parPrefix in the task.description
+		// Extract the number after parPrefix
 		startIndex := strings.Index(parString, parMarker) + len(parMarker)
 		endIndex := startIndex
 		for endIndex < len(parString) && parString[endIndex] >= '0' && parString[endIndex] <= '9' {
@@ -21,7 +24,10 @@ func ExtractNumber(parString string, parMarker string) string {
 		if startIndex != endIndex {
 			return parString[startIndex:endIndex]
 		}
+		// continue searching
+		return ExtractNumber(parString[endIndex:], parMarker)
 	}
+
 	return ""
 }
 
@@ -32,6 +38,7 @@ func ContainsAnnotationDescr(parAnnotations []model.Annotation, parAnnotation mo
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -42,12 +49,13 @@ func ContainsAnnotationPrefix(parAnnotations []model.Annotation, parPrefix strin
 			return true
 		}
 	}
+
 	return false
 }
 
 // LoadConfig to load and parse a taskwarrior config file
 // config files contains lines with the following format:
-// titi.tata.toto = "tutu"
+// titi.tata.toto = "tutu".
 func LoadConfig(parConfigPath string) ([]model.Rule, error) {
 	var rules []model.Rule
 	// load file at path as text
@@ -78,5 +86,6 @@ func LoadConfig(parConfigPath string) ([]model.Rule, error) {
 			rules = append(rules, rule)
 		}
 	}
+
 	return rules, nil
 }
